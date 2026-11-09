@@ -18,9 +18,9 @@ from qgis.gui import *
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox, QProgressBar
 from qgis.PyQt.QtCore import *
 
-import PagLuxembourg.main
-import PagLuxembourg.project
-from PagLuxembourg.widgets.data_checker.data_checker import *
+from ... import main
+from ... import project
+from ...widgets.data_checker.data_checker import *
 
 class ExportGML(object):
     '''
@@ -41,7 +41,7 @@ class ExportGML(object):
         '''
         Runs the widget
         '''
-        project = PagLuxembourg.main.current_project
+        project = main.current_project
 
         if not project.isPagProject():
             return
@@ -76,12 +76,12 @@ class ExportGML(object):
         os.makedirs(temp_dir)
 
         # Progress bar
-        progressMessageBar = PagLuxembourg.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ExportGML','Exporting to GML'))
+        progressMessageBar = main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ExportGML','Exporting to GML'))
         progress = QProgressBar()
         progress.setMaximum(len(QgsProject.instance().mapLayers()))
         progress.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
         progressMessageBar.layout().addWidget(progress)
-        PagLuxembourg.main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) #INFO=0
+        main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) #INFO=0
 
         # Create final GML document
         gml = getDOMImplementation().createDocument('http://www.interlis.ch/INTERLIS2.3/GML32/INTERLIS', 'ili:TRANSFER', None)
@@ -108,7 +108,7 @@ class ExportGML(object):
         entity_count_PAG = layer_PAG.selectedFeatureCount()
 
         # Iterates through XSD types
-        for type in PagLuxembourg.main.xsd_schema.types:
+        for type in main.xsd_schema.types:
             layer = project.getLayer(type)
 
             if layer is None:
@@ -160,16 +160,16 @@ class ExportGML(object):
 
         # Messages display for number of selected entities
         if entity_count_PAG == 1 :
-            PagLuxembourg.main.qgis_interface.messageBar().clearWidgets()
-            PagLuxembourg.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ExportGML','Success'),
+            main.qgis_interface.messageBar().clearWidgets()
+            main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ExportGML','Success'),
                                                                        QCoreApplication.translate('ExportGML','GML export was successful with 1 selected entity in MODIFICATION PAG layer'))
         elif entity_count_PAG == 0 :
-            PagLuxembourg.main.qgis_interface.messageBar().clearWidgets()
-            PagLuxembourg.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ExportGML_without','Success'),
+            main.qgis_interface.messageBar().clearWidgets()
+            main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ExportGML_without','Success'),
                                                                        QCoreApplication.translate('ExportGML_without','GML export was successful without selected entity in MODIFICATION PAG layer'))
         else :
-            PagLuxembourg.main.qgis_interface.messageBar().clearWidgets()
-            PagLuxembourg.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ExportGML_many','Success'),
+            main.qgis_interface.messageBar().clearWidgets()
+            main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ExportGML_many','Success'),
                                                                        QCoreApplication.translate('ExportGML_many','GML export was successful with {} selected entities in MODIFICATION PAG layer').format(entity_count_PAG))
 
 

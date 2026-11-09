@@ -10,7 +10,7 @@ import os
 from qgis.core import *
 from qgis.PyQt.QtCore import QCoreApplication
 
-import PagLuxembourg.main
+from ... import main
 
 class StylizeProject(object):
     '''
@@ -29,7 +29,7 @@ class StylizeProject(object):
         Runs the widget
         '''
 
-        project = PagLuxembourg.main.current_project
+        project = main.current_project
 
         if not project.isPagProject():
             return
@@ -38,7 +38,7 @@ class StylizeProject(object):
         maplayers = QgsProject.instance().mapLayers()
 
         # Iterates through XSD types
-        for type in PagLuxembourg.main.xsd_schema.types:
+        for type in main.xsd_schema.types:
             if type.geometry_type is None:
                 continue
 
@@ -57,7 +57,7 @@ class StylizeProject(object):
 
             self.stylizeLayer(layer, type)
 
-        PagLuxembourg.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('StylizeProject','Success'),
+        main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('StylizeProject','Success'),
                                                                    QCoreApplication.translate('StylizeProject','The layers styling is finished.'))
 
     def stylizeLayer(self, layer, type):
@@ -71,7 +71,7 @@ class StylizeProject(object):
         :type type: PAGType
         '''
 
-        qml = os.path.join(PagLuxembourg.main.plugin_dir,
+        qml = os.path.join(main.plugin_dir,
                                'styles',
                                '{}.qml'.format(type.name))
 

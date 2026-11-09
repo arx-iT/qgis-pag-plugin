@@ -18,9 +18,9 @@ from qgis.PyQt.QtCore import QFileInfo, QVariant, QObject, pyqtSignal, QSettings
 from qgis.PyQt.QtWidgets import QMessageBox
 
 from . import main
-from PagLuxembourg.schema import *
-from PagLuxembourg.widgets.stylize.stylize import *
-from PagLuxembourg.widgets.topology.topology import *
+from .schema import *
+from .widgets.stylize.stylize import *
+from .widgets.topology.topology import *
 import io
 
 FILENAME = 'project.qgs'
@@ -450,7 +450,7 @@ class Project(QObject):
         '''
 
         # Get rules config
-        config_path = os.path.join(PagLuxembourg.main.plugin_dir,
+        config_path = os.path.join(main.plugin_dir,
                                    'assets',
                                    'LayerTree.json')
 

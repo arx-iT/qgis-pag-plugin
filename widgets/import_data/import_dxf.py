@@ -9,7 +9,7 @@ from builtins import object
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import *
 
-import PagLuxembourg.main
+from ... import main
 
 from .import_dxf_dialog import ImportDxfDialog
 
@@ -37,5 +37,5 @@ class ImportDXF(object):
         if self.dlg.valid:
             self.dlg.show()
         else:
-            PagLuxembourg.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('ImportDXF','Error'),
+            main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('ImportDXF','Error'),
                                                                         QCoreApplication.translate('ImportDXF','DXF file is not valid'))

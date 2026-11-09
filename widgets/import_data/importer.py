@@ -18,9 +18,9 @@ from qgis.PyQt.QtWidgets import QCheckBox, QWidget, QHBoxLayout, QComboBox, QDou
 from qgis.core import *
 from qgis.gui import *
 
-import PagLuxembourg.main
-import PagLuxembourg.project
-from PagLuxembourg.controls.filename import SimpleFilenamePicker
+from ... import main
+from ... import project
+from ...controls.filename import SimpleFilenamePicker
 
 class Importer(object):
     '''
@@ -46,7 +46,7 @@ class Importer(object):
         Add to import log
         '''
 
-        importlog_layer = PagLuxembourg.main.current_project.getImportLogLayer()
+        importlog_layer = main.current_project.getImportLogLayer()
         dst_feature = QgsFeature(importlog_layer.fields())
         dst_feature.setAttribute(1, self.importid)
         dst_feature.setAttribute(2, self.import_date)
@@ -64,43 +64,43 @@ class Importer(object):
         # Commit
         if not importlog_layer.commitChanges():
             importlog_layer.rollBack()
-            PagLuxembourg.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('Importer', 'Error'),
+            main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('Importer', 'Error'),
                                                                         QCoreApplication.translate('Importer', 'Commit error on layer {}').format(importlog_layer.name()))
             errors = importlog_layer.commitErrors()
             for error in errors:
                 QgsMessageLog.logMessage(error, 'PAG Luxembourg', 2) # QGis.Critical = 2
-            PagLuxembourg.main.qgis_interface.openMessageLog()
+            main.qgis_interface.openMessageLog()
 
         '''
         Process import result
         '''
         # Zoom to selected
         if self.imported_extent is not None:
-            PagLuxembourg.main.qgis_interface.mapCanvas().setExtent(self.imported_extent)
+            main.qgis_interface.mapCanvas().setExtent(self.imported_extent)
 
-        PagLuxembourg.main.qgis_interface.messageBar().clearWidgets()
+        main.qgis_interface.messageBar().clearWidgets()
 
         # Display features errors
         if len(self.features_errors) > 0:
-            messageBar = PagLuxembourg.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('Importer', 'Warning'),
+            messageBar = main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('Importer', 'Warning'),
                                                                                       QCoreApplication.translate('Importer', 'Import was successful, but some features could not be imported'))
             btnExportCsv = QPushButton(QCoreApplication.translate('Importer', 'Export to CSV'))
             btnExportCsv.clicked.connect(self._exportErrorsToCsv)
             messageBar.layout().addWidget(btnExportCsv)
-            PagLuxembourg.main.qgis_interface.messageBar().pushWidget(messageBar, 1) # Qgis.Warning = 1
+            main.qgis_interface.messageBar().pushWidget(messageBar, 1) # Qgis.Warning = 1
 
         # Display commit errors
         for error in self.commit_errors:
-            messageBar = PagLuxembourg.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('Importer', 'Error'),
+            messageBar = main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('Importer', 'Error'),
                                                                                       error)
             btnOpenLog = QPushButton(QCoreApplication.translate('Importer', 'Open log'))
-            btnOpenLog.clicked.connect(PagLuxembourg.main.qgis_interface.openMessageLog)
+            btnOpenLog.clicked.connect(main.qgis_interface.openMessageLog)
             messageBar.layout().addWidget(btnOpenLog)
-            PagLuxembourg.main.qgis_interface.messageBar().pushWidget(messageBar, 2) # Qgis.Critical = 2
+            main.qgis_interface.messageBar().pushWidget(messageBar, 2) # Qgis.Critical = 2
 
         # Display success message
         if (len(self.features_errors) + len(self.commit_errors)) == 0:
-            PagLuxembourg.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Importer', 'Success'),
+            main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Importer', 'Success'),
                                                                        QCoreApplication.translate('Importer', 'Import was successful'))
 
     def _exportErrorsToCsv(self):
@@ -149,13 +149,13 @@ class Importer(object):
             csvfile.close()
 
             # Success message
-            PagLuxembourg.main.qgis_interface.messageBar().clearWidgets()
-            PagLuxembourg.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Importer', 'Success'),
+            main.qgis_interface.messageBar().clearWidgets()
+            main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Importer', 'Success'),
                                                                         QCoreApplication.translate('Importer', 'CSV export was successful'))
         except:
             # Error message
-            PagLuxembourg.main.qgis_interface.messageBar().clearWidgets()
-            PagLuxembourg.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('Importer', 'Error'),
+            main.qgis_interface.messageBar().clearWidgets()
+            main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('Importer', 'Error'),
                                                                         QCoreApplication.translate('Importer', 'Error writing CSV file'))
 
     def _importLayer(self, src_layer, dst_layer, mapping, progressbar = None):
@@ -170,7 +170,7 @@ class Importer(object):
 
         feature_request = None
 
-        importid_index = dst_layer.fields().indexFromName(PagLuxembourg.project.IMPORT_ID)
+        importid_index = dst_layer.fields().indexFromName(project.IMPORT_ID)
 
         # Set layer filter if existing, for DXF
         if mapping.sourceLayerFilter() is None:

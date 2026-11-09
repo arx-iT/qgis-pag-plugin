@@ -16,8 +16,8 @@ from qgis.PyQt.QtCore import QCoreApplication, Qt, QVariant, QSettings
 from qgis.core import *
 from qgis.utils import *
 
-import PagLuxembourg.main
-import PagLuxembourg.project
+from ... import main
+from ... import project
 
 from .importer import *
 from collections import OrderedDict
@@ -89,9 +89,9 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         # Adds the PAG map layers
         layers = [layer for layer in QgsProject.instance().mapLayers().values()]
-        #for layer in PagLuxembourg.main.qgis_interface.legendInterface().layers():
+        #for layer in main.qgis_interface.legendInterface().layers():
         for layer in layers:
-            if layer.type() == QgsMapLayer.VectorLayer and PagLuxembourg.main.current_project.isPagLayer(layer):
+            if layer.type() == QgsMapLayer.VectorLayer and main.current_project.isPagLayer(layer):
                 self.qgislayers.append(layer)
 
     def _loadDxfLayers(self, filename):
@@ -156,7 +156,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         layers = OrderedDict()
 
         for layer in self.qgislayers:
-            layers[PagLuxembourg.main.current_project.getLayerTableName(layer)]=layer.name()
+            layers[main.current_project.getLayerTableName(layer)]=layer.name()
 
         return self._getCombobox(layers,
                                  primary_selected_value=selected_layer,
@@ -239,7 +239,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         dxf_layername = self._getCellValue(self.tabLayersMapping, layersmapping_rowindex, 0)
         qgis_layer = self._getQgisLayerFromTableName(self._getCellValue(self.tabLayersMapping, layersmapping_rowindex, 1))
-        qgis_tablename = PagLuxembourg.main.current_project.getLayerTableName(qgis_layer)
+        qgis_tablename = main.current_project.getLayerTableName(qgis_layer)
 
         layer_mapping = self._getLayerMappingFromSourceDxfLayer(dxf_layername)
 
@@ -253,10 +253,10 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             destination_fields = qgis_layer.dataProvider().fields()
             for field in destination_fields:
                 # Skip PK field
-                if field.name() == PagLuxembourg.project.PK:
+                if field.name() == project.PK:
                     continue
                 # Skip IMPORT_ID field
-                if field.name() == PagLuxembourg.project.IMPORT_ID:
+                if field.name() == project.IMPORT_ID:
                     continue
 
                 # Add or update mapping for every fields
@@ -285,7 +285,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         '''
 
         for layer in self.qgislayers:
-            if PagLuxembourg.main.current_project.getLayerTableName(layer) == tablename:
+            if main.current_project.getLayerTableName(layer) == tablename:
                 return layer
 
         return None
@@ -320,10 +320,10 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         # Fill layers mapping
         for field in qgis_fields:
             # Skip PK field
-            if field.name() == PagLuxembourg.project.PK:
+            if field.name() == project.PK:
                 continue
             # Skip IMPORT_ID field
-            if field.name() == PagLuxembourg.project.IMPORT_ID:
+            if field.name() == project.IMPORT_ID:
                 continue
 
             source, destination, constant_value, enabled, valuemap = layer_mapping.getFieldMappingForDestination(field.name())
@@ -350,7 +350,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             layer_mapping = self._getLayerMappingFromSourceDxfLayer(dxf_layername)
 
             qgis_layer = self._getQgisLayerFromTableName(self._getCellValue(self.tabLayersMapping, layermapping_rowindex, 1))
-            qgis_tablename = PagLuxembourg.main.current_project.getLayerTableName(qgis_layer)
+            qgis_tablename = main.current_project.getLayerTableName(qgis_layer)
 
             # Check whether the destination layer is the same
             if qgis_tablename is None or layer_mapping.destinationLayerName() != qgis_tablename:
@@ -409,7 +409,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         self.close()
 
         # Progress bar + message
-        progressMessageBar = PagLuxembourg.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportDxfDialog','Importing DXF'))
+        progressMessageBar = main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportDxfDialog','Importing DXF'))
         progress = QProgressBar()
         progress.setMaximum(self._getEnabledLayerMappingCount())
         progress.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
@@ -418,7 +418,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         progress2.setMaximum(self.dxflayer_points.featureCount() + self.dxflayer_linestrings.featureCount() + self.dxflayer_polygons.featureCount())
         progress2.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
         progressMessageBar.layout().addWidget(progress2)
-        PagLuxembourg.main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # QGis.Info = 0
+        main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # QGis.Info = 0
 
         # Start import session
         self._startImportSession()

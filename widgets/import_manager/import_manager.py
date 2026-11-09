@@ -13,8 +13,8 @@ from qgis.gui import *
 from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.PyQt.QtCore import *
 
-import PagLuxembourg.main
-import PagLuxembourg.project
+from ... import main
+from ... import project
 
 from .import_manager_dialog import ImportManagerDialog
 
@@ -34,7 +34,7 @@ class ImportManager(object):
         Runs the widget
         '''
 
-        if not PagLuxembourg.main.current_project.isPagProject():
+        if not main.current_project.isPagProject():
             return
 
         self.dlg = ImportManagerDialog()
@@ -45,25 +45,25 @@ class ImportManager(object):
 
         # Delete import from layers
         layers = [layer for layer in QgsProject.instance().mapLayers().values()]
-        #for layer in PagLuxembourg.main.qgis_interface.legendInterface().layers():
+        #for layer in main.qgis_interface.legendInterface().layers():
         for layer in layers:
-            if not (layer.type() == QgsMapLayer.VectorLayer and PagLuxembourg.main.current_project.isPagLayer(layer)):
+            if not (layer.type() == QgsMapLayer.VectorLayer and main.current_project.isPagLayer(layer)):
                 continue
 
             errors = errors or not self._deleteImportFromLayer(layer, id)
 
         # Delete entry in import log Table
-        layer = PagLuxembourg.main.current_project.getImportLogLayer()
+        layer = main.current_project.getImportLogLayer()
         errors = errors or not self._deleteImportFromLayer(layer, id)
 
         if not errors:
-            PagLuxembourg.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ImportManager', 'Success'),
+            main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ImportManager', 'Success'),
                                                                        QCoreApplication.translate('ImportManager', 'Rollback was successful'))
 
     def _deleteImportFromLayer(self, layer, importid):
         fids = []
 
-        expr = QgsExpression('{}=\'{}\''.format(PagLuxembourg.project.IMPORT_ID, importid))
+        expr = QgsExpression('{}=\'{}\''.format(project.IMPORT_ID, importid))
         feature_request = QgsFeatureRequest(expr)
 
         for feature in layer.getFeatures(feature_request):
@@ -79,13 +79,13 @@ class ImportManager(object):
         # Commit
         if not layer.commitChanges():
             layer.rollBack()
-            PagLuxembourg.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('ImportManager','Error'),
+            main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('ImportManager','Error'),
                                                                         QCoreApplication.translate('ImportManager','Commit error on layer {}').format(layer.name()))
             errors = layer.commitErrors()
             for error in errors:
                 QgsMessageLog.logMessage(error, 'PAG Luxembourg', QgsMessageLog.CRITICAL)
 
-            PagLuxembourg.main.qgis_interface.openMessageLog()
+            main.qgis_interface.openMessageLog()
             return False
 
         return True

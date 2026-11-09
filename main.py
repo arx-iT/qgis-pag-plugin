@@ -42,8 +42,8 @@ from .widgets.topology.topology import *
 from .widgets.about.about import *
 from .editor import simple_filename, precise_range
 # Schema
-from PagLuxembourg.schema import *
-from PagLuxembourg.project import *
+from .schema import *
+from .project import *
 
 # Global variables
 plugin_dir = os.path.dirname(__file__)

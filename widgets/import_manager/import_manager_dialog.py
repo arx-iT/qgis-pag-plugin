@@ -31,7 +31,7 @@ from qgis.PyQt.QtCore import QCoreApplication, Qt, QVariant
 
 from qgis.core import *
 
-import PagLuxembourg.main
+from ... import main
 
 from . import import_manager
 
@@ -66,7 +66,7 @@ class ImportManagerDialog(QDialog, FORM_CLASS):
         self.tabImports.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
 
         # Load imports
-        layer = PagLuxembourg.main.current_project.getImportLogLayer()
+        layer = main.current_project.getImportLogLayer()
 
         if layer is None:
             return

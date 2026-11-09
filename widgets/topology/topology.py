@@ -16,7 +16,7 @@ from qgis.core import *
 import qgis.utils
 from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtCore import QCoreApplication
-import PagLuxembourg.main
+from ... import main
 
 TOPOL_SECTION = "Topol"
 
@@ -36,7 +36,7 @@ class TopologyChecker(object):
         Runs the widget
         '''
 
-        project = PagLuxembourg.main.current_project
+        project = main.current_project
 
         if not project.isPagProject():
             return
@@ -51,11 +51,11 @@ class TopologyChecker(object):
             canvas = qgis.utils.iface.mapCanvas()
             canvas.zoomToSelected(modification_pag_layer)
             if entity_count==1:
-                PagLuxembourg.main.qgis_interface.messageBar().clearWidgets()
-                PagLuxembourg.main.qgis_interface.messageBar().pushMessage(QCoreApplication.translate('Topology','Information'),
+                main.qgis_interface.messageBar().clearWidgets()
+                main.qgis_interface.messageBar().pushMessage(QCoreApplication.translate('Topology','Information'),
                                                                    QCoreApplication.translate('Topology','There is 1 selected entity in MODIFICATION PAG layer. You can now check topology'))
             elif entity_count==0:
-                PagLuxembourg.main.qgis_interface.messageBar().pushMessage(QCoreApplication.translate('Topology_no','Information'),
+                main.qgis_interface.messageBar().pushMessage(QCoreApplication.translate('Topology_no','Information'),
                                                                    QCoreApplication.translate('Topology_no','There is no selected entity in MODIFICATION PAG layer. You can now check topology'))
             else:
                 qgis.utils.iface.messageBar().pushMessage(QCoreApplication.translate('Topology_many', 'Information'),
@@ -69,7 +69,7 @@ class TopologyChecker(object):
         '''
 
         # Get rules config
-        config_path = os.path.join(PagLuxembourg.main.plugin_dir,
+        config_path = os.path.join(main.plugin_dir,
                                'widgets',
                                'topology',
                                'config.json')
@@ -115,7 +115,7 @@ class TopologyChecker(object):
         layer1 = layer_registry.mapLayer(layer1Id)
         layer2 = layer_registry.mapLayer(layer2Id)
 
-        current_project = PagLuxembourg.main.current_project
+        current_project = main.current_project
         layer1_table = current_project.getUriInfos(layer1.source())[1] if layer1 is not None else None
         layer2_table = current_project.getUriInfos(layer2.source())[1] if layer2 is not None else None
 
@@ -135,7 +135,7 @@ class TopologyChecker(object):
 
         # Get layer id from table name
         layer_registry = QgsProject.instance()
-        current_project = PagLuxembourg.main.current_project
+        current_project = main.current_project
         for layerid, layer in list(layer_registry.mapLayers().items()):
             layer_table = current_project.getUriInfos(layer.source())[1]
             if rule.layer1 == layer_table:

@@ -13,7 +13,7 @@ from qgis.gui import *
 from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.PyQt.QtCore import *
 
-import PagLuxembourg.main
+from ... import main
 
 from .import_gml import ImportGML
 from .import_shp import ImportSHP
@@ -36,7 +36,7 @@ class ImportData(object):
         Runs the widget
         '''
 
-        if not PagLuxembourg.main.current_project.isPagProject():
+        if not main.current_project.isPagProject():
             return
 
         # Select file to import

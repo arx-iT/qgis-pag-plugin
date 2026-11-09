@@ -33,7 +33,7 @@ from qgis.PyQt.QtCore import QCoreApplication
 
 from qgis.core import *
 
-import PagLuxembourg.main
+from ... import main
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'error_summary_dialog.ui'))
@@ -116,7 +116,7 @@ class ErrorSummaryDialog(QDialog, FORM_CLASS):
         layer, feature, field, message = self.data_errors[currentRow]
         #layer.setSelectedFeatures([feature.id()])
         layer.selectByIds([feature.id()])
-        PagLuxembourg.main.qgis_interface.mapCanvas().zoomToSelected(layer)
+        main.qgis_interface.mapCanvas().zoomToSelected(layer)
 
     def _tabDataErrorsCellDblClicked(self, row, column):
         # Deselect
@@ -126,14 +126,14 @@ class ErrorSummaryDialog(QDialog, FORM_CLASS):
         if not layer.isEditable():
             layer.startEditing()
 
-        #PagLuxembourg.main.qgis_interface.legendInterface().setCurrentLayer(layer)
-        PagLuxembourg.main.qgis_interface.setActiveLayer(layer)
+        #main.qgis_interface.legendInterface().setCurrentLayer(layer)
+        main.qgis_interface.setActiveLayer(layer)
 
 
         features = layer.getFeatures(QgsFeatureRequest(feature.id()))
 
         for feature in features:
-            PagLuxembourg.main.qgis_interface.openFeatureForm(layer, feature, showModal=False)
+            main.qgis_interface.openFeatureForm(layer, feature, showModal=False)
 
     def exportToCsv(self):
         # Select CSV file to export
@@ -181,6 +181,6 @@ class ErrorSummaryDialog(QDialog, FORM_CLASS):
         csvfile.close()
 
         # Success message
-        PagLuxembourg.main.qgis_interface.messageBar().clearWidgets()
-        PagLuxembourg.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ErrorSummaryDialog','Success'),
+        main.qgis_interface.messageBar().clearWidgets()
+        main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ErrorSummaryDialog','Success'),
                                                                    QCoreApplication.translate('ErrorSummaryDialog','CSV export was successful'))

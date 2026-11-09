@@ -28,7 +28,7 @@ from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qgis.PyQt.QtGui import QPixmap, QDesktopServices
 from qgis.PyQt.QtCore import QCoreApplication, QUrl
 
-import PagLuxembourg.main
+from ... import main
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'about_dialog.ui'))
@@ -49,7 +49,7 @@ class AboutDialog(QDialog, FORM_CLASS):
         self.setupUi(self)
 
         logo_path = os.path.join(
-            PagLuxembourg.main.plugin_dir,
+            main.plugin_dir,
             'widgets',
             'about',
             'logo_pag.png')
@@ -57,7 +57,7 @@ class AboutDialog(QDialog, FORM_CLASS):
         self.lblLogoPlugin.setPixmap(pixmap)
 
         logo_path = os.path.join(
-            PagLuxembourg.main.plugin_dir,
+            main.plugin_dir,
             'widgets',
             'about',
             'logo_arxit.png')
@@ -66,7 +66,7 @@ class AboutDialog(QDialog, FORM_CLASS):
 
     def _showHelp(self):
         help_path = os.path.join(
-            PagLuxembourg.main.plugin_dir,
+            main.plugin_dir,
             'help',
             'user',
             'index.html')
