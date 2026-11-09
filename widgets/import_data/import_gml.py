@@ -65,7 +65,7 @@ class ImportGML(Importer):
         progress2 = QProgressBar()
         progress2.setAlignment(Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
         progressMessageBar.layout().addWidget(progress2)
-        main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # Qgis.Info = 0
+        main.qgis_interface.messageBar().pushWidget(progressMessageBar, Qgis.MessageLevel.Info)
 
         # Start import session
         self._startImportSession()

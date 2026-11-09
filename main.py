@@ -357,7 +357,7 @@ class PAGLuxembourg(object):
         button.setText(self.tr(u'Show plugin manager'),)
         button.pressed.connect(self.iface.actionManagePlugins().trigger)
         widget.layout().addWidget(button)
-        self.iface.messageBar().pushWidget(widget, 2) #Critical = 2
+        self.iface.messageBar().pushWidget(widget, Qgis.MessageLevel.Critical)
 
     def unload(self):
         '''

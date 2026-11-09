@@ -420,7 +420,7 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
         progress.setMaximum(self.shplayer.featureCount())
         progress.setAlignment(Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
         progressMessageBar.layout().addWidget(progress)
-        main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # QGis.Info = 0
+        main.qgis_interface.messageBar().pushWidget(progressMessageBar, Qgis.MessageLevel.Info)
 
         # Start import session
         self._startImportSession()

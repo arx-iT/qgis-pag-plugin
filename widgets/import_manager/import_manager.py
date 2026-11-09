@@ -83,7 +83,7 @@ class ImportManager(object):
                                                                         QCoreApplication.translate('ImportManager','Commit error on layer {}').format(layer.name()))
             errors = layer.commitErrors()
             for error in errors:
-                QgsMessageLog.logMessage(error, 'PAG Luxembourg', QgsMessageLog.CRITICAL)
+                QgsMessageLog.logMessage(error, 'PAG Luxembourg', Qgis.MessageLevel.Critical)
 
             main.qgis_interface.openMessageLog()
             return False

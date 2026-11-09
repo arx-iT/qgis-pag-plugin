@@ -68,7 +68,7 @@ class Importer(object):
                                                                         QCoreApplication.translate('Importer', 'Commit error on layer {}').format(importlog_layer.name()))
             errors = importlog_layer.commitErrors()
             for error in errors:
-                QgsMessageLog.logMessage(error, 'PAG Luxembourg', 2) # QGis.Critical = 2
+                QgsMessageLog.logMessage(error, 'PAG Luxembourg', Qgis.MessageLevel.Critical)
             main.qgis_interface.openMessageLog()
 
         '''
@@ -87,7 +87,7 @@ class Importer(object):
             btnExportCsv = QPushButton(QCoreApplication.translate('Importer', 'Export to CSV'))
             btnExportCsv.clicked.connect(self._exportErrorsToCsv)
             messageBar.layout().addWidget(btnExportCsv)
-            main.qgis_interface.messageBar().pushWidget(messageBar, 1) # Qgis.Warning = 1
+            main.qgis_interface.messageBar().pushWidget(messageBar, Qgis.MessageLevel.Warning)
 
         # Display commit errors
         for error in self.commit_errors:
@@ -96,7 +96,7 @@ class Importer(object):
             btnOpenLog = QPushButton(QCoreApplication.translate('Importer', 'Open log'))
             btnOpenLog.clicked.connect(main.qgis_interface.openMessageLog)
             messageBar.layout().addWidget(btnOpenLog)
-            main.qgis_interface.messageBar().pushWidget(messageBar, 2) # Qgis.Critical = 2
+            main.qgis_interface.messageBar().pushWidget(messageBar, Qgis.MessageLevel.Critical)
 
         # Display success message
         if (len(self.features_errors) + len(self.commit_errors)) == 0:
@@ -300,7 +300,7 @@ class Importer(object):
             self.commit_errors.append(QCoreApplication.translate('Importer', 'Commit error on layer {}').format(dst_layer.name()))
             errors = dst_layer.commitErrors()
             for error in errors:
-                QgsMessageLog.logMessage(error, 'Import {}'.format(self.import_filename), 2) # Qgis.Critical = 2
+                QgsMessageLog.logMessage(error, 'Import {}'.format(self.import_filename), Qgis.MessageLevel.Critical)
 
         # Reload layer
         dst_layer.reload()
