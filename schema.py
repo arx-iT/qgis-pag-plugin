@@ -68,7 +68,7 @@ class PAGSchema(object):
 
         # Parse as QgsGmlSchema
         file = QFile(xsd_path)
-        file.open(QIODevice.ReadOnly)
+        file.open(QIODevice.OpenModeFlag.ReadOnly)
         xsdcontent = file.readAll()
 
         schema = QgsGmlSchema()

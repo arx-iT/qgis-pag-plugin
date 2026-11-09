@@ -227,7 +227,7 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
         combobox = QComboBox()
         layout = QHBoxLayout(widget)
         layout.addWidget(combobox, 1)
-        layout.setAlignment(Qt.AlignCenter)
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.setContentsMargins(5, 0, 5, 0)
         widget.setLayout(layout)
 
@@ -418,7 +418,7 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
         progressMessageBar = main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportShpDialog', 'Importing {}').format(self.shplayer.source()))
         progress = QProgressBar()
         progress.setMaximum(self.shplayer.featureCount())
-        progress.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
+        progress.setAlignment(Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
         progressMessageBar.layout().addWidget(progress)
         main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # QGis.Info = 0
 
@@ -443,12 +443,12 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
 
         # Select config file to load
         dialog = QFileDialog()
-        dialog.setFileMode(QFileDialog.ExistingFile)
-        dialog.setOption(QFileDialog.ReadOnly)
+        dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
+        dialog.setOption(QFileDialog.Option.ReadOnly)
         dialog.setNameFilter('Json file (*.json)');
         dialog.setWindowTitle(QCoreApplication.translate('ImportShpDialog','Select the configuration file to load'))
         dialog.setSizeGripEnabled(False)
-        result = dialog.exec_()
+        result = dialog.exec()
 
         if result == 0:
             return
@@ -480,12 +480,12 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
 
         # Select json file to save
         dialog = QFileDialog()
-        dialog.setFileMode(QFileDialog.AnyFile)
-        dialog.setAcceptMode(QFileDialog.AcceptSave)
+        dialog.setFileMode(QFileDialog.FileMode.AnyFile)
+        dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         dialog.setNameFilter('Json file (*.json)');
         dialog.setWindowTitle(QCoreApplication.translate('ImportShpDialog','Select the json location'))
         dialog.setSizeGripEnabled(False)
-        result = dialog.exec_()
+        result = dialog.exec()
 
         if result == 0:
             return

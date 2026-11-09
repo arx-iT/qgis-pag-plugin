@@ -412,11 +412,11 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         progressMessageBar = main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportDxfDialog','Importing DXF'))
         progress = QProgressBar()
         progress.setMaximum(self._getEnabledLayerMappingCount())
-        progress.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
+        progress.setAlignment(Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
         progressMessageBar.layout().addWidget(progress)
         progress2 = QProgressBar()
         progress2.setMaximum(self.dxflayer_points.featureCount() + self.dxflayer_linestrings.featureCount() + self.dxflayer_polygons.featureCount())
-        progress2.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
+        progress2.setAlignment(Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
         progressMessageBar.layout().addWidget(progress2)
         main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # QGis.Info = 0
 
@@ -468,12 +468,12 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         # Select config file to load
         dialog = QFileDialog()
-        dialog.setFileMode(QFileDialog.ExistingFile)
-        dialog.setOption(QFileDialog.ReadOnly)
+        dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
+        dialog.setOption(QFileDialog.Option.ReadOnly)
         dialog.setNameFilter('Json file (*.json)')
         dialog.setWindowTitle(QCoreApplication.translate('ImportDxfDialog', 'Select the configuration file to load'))
         dialog.setSizeGripEnabled(False)
-        result = dialog.exec_()
+        result = dialog.exec()
 
         if result == 0:
             return
@@ -500,12 +500,12 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         # Select json file to save
         dialog = QFileDialog()
-        dialog.setFileMode(QFileDialog.AnyFile)
-        dialog.setAcceptMode(QFileDialog.AcceptSave)
+        dialog.setFileMode(QFileDialog.FileMode.AnyFile)
+        dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         dialog.setNameFilter('Json file (*.json)')
         dialog.setWindowTitle(QCoreApplication.translate('ImportDxfDialog', 'Select the json location'))
         dialog.setSizeGripEnabled(False)
-        result = dialog.exec_()
+        result = dialog.exec()
 
         if result == 0:
             return

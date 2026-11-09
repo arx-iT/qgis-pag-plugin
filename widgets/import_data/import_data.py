@@ -41,12 +41,12 @@ class ImportData(object):
 
         # Select file to import
         dialog = QFileDialog()
-        dialog.setFileMode(QFileDialog.ExistingFile)
-        dialog.setOption(QFileDialog.ReadOnly)
+        dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
+        dialog.setOption(QFileDialog.Option.ReadOnly)
         dialog.setNameFilter('Vector file (*.gml *.shp *.geojson *.dxf)');
         dialog.setWindowTitle(QCoreApplication.translate('ImportData','Select the file to import'))
         dialog.setSizeGripEnabled(False)
-        result = dialog.exec_()
+        result = dialog.exec()
 
         if result == 0:
             return

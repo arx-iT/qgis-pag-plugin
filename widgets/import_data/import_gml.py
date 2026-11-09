@@ -41,7 +41,7 @@ class ImportGML(Importer):
 
         # Open GML
         file = QFile(self.filename)
-        file.open(QIODevice.ReadOnly)
+        file.open(QIODevice.OpenModeFlag.ReadOnly)
         gmlcontent = file.readAll()
 
         # Guess GML schema
@@ -60,10 +60,10 @@ class ImportGML(Importer):
         progressMessageBar = main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportGML', 'Importing GML'))
         progress = QProgressBar()
         progress.setMaximum(len(gmlschema.typeNames()))
-        progress.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
+        progress.setAlignment(Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
         progressMessageBar.layout().addWidget(progress)
         progress2 = QProgressBar()
-        progress2.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
+        progress2.setAlignment(Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
         progressMessageBar.layout().addWidget(progress2)
         main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # Qgis.Info = 0
 

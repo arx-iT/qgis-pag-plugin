@@ -138,12 +138,12 @@ class ErrorSummaryDialog(QDialog, FORM_CLASS):
     def exportToCsv(self):
         # Select CSV file to export
         dialog = QFileDialog()
-        dialog.setFileMode(QFileDialog.AnyFile)
-        dialog.setAcceptMode(QFileDialog.AcceptSave)
+        dialog.setFileMode(QFileDialog.FileMode.AnyFile)
+        dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         dialog.setNameFilter('CSV file (*.csv)')
         dialog.setWindowTitle(QCoreApplication.translate('ErrorSummaryDialog','Select the csv location'))
         dialog.setSizeGripEnabled(False)
-        result = dialog.exec_()
+        result = dialog.exec()
 
         if result == 0:
             return

@@ -70,4 +70,4 @@ class AboutDialog(QDialog, FORM_CLASS):
             'help',
             'user',
             'index.html')
-        QDesktopServices.openUrl(QUrl('file:///' + help_path, QUrl.TolerantMode))
+        QDesktopServices.openUrl(QUrl('file:///' + help_path, QUrl.ParsingMode.TolerantMode))

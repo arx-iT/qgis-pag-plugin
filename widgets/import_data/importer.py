@@ -106,12 +106,12 @@ class Importer(object):
     def _exportErrorsToCsv(self):
         # Select CSV file to export
         dialog = QFileDialog()
-        dialog.setFileMode(QFileDialog.AnyFile)
-        dialog.setAcceptMode(QFileDialog.AcceptSave)
+        dialog.setFileMode(QFileDialog.FileMode.AnyFile)
+        dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         dialog.setNameFilter('CSV file (*.csv)');
         dialog.setWindowTitle(QCoreApplication.translate('Importer', 'Select the csv location'))
         dialog.setSizeGripEnabled(False)
-        result = dialog.exec_()
+        result = dialog.exec()
 
         if result == 0:
             return
@@ -414,7 +414,7 @@ class Importer(object):
         checkBox.setChecked(checked)
         layout = QHBoxLayout(widget)
         layout.addWidget(checkBox)
-        layout.setAlignment(Qt.AlignCenter)
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.setContentsMargins(0, 0, 0, 0)
         widget.setLayout(layout)
 
@@ -456,7 +456,7 @@ class Importer(object):
         combobox = QComboBox()
         layout = QHBoxLayout(widget)
         layout.addWidget(combobox, 1)
-        layout.setAlignment(Qt.AlignCenter)
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.setContentsMargins(5, 0, 5, 0)
         widget.setLayout(layout)
 
@@ -506,7 +506,7 @@ class Importer(object):
             spinbox.setValue(value)
         layout = QHBoxLayout(widget)
         layout.addWidget(spinbox, 1);
-        layout.setAlignment(Qt.AlignCenter);
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter);
         layout.setContentsMargins(5, 0, 5, 0);
         widget.setLayout(layout);
 
@@ -534,7 +534,7 @@ class Importer(object):
             calendar.setDate(QDate.currentDate())
         layout = QHBoxLayout(widget)
         layout.addWidget(calendar, 1);
-        layout.setAlignment(Qt.AlignCenter);
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter);
         layout.setContentsMargins(5, 0, 5, 0);
         widget.setLayout(layout);
 
@@ -556,7 +556,7 @@ class Importer(object):
         textbox.setText(value)
         layout = QHBoxLayout(widget)
         layout.addWidget(textbox, 1);
-        layout.setAlignment(Qt.AlignCenter);
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter);
         layout.setContentsMargins(5, 0, 5, 0);
         widget.setLayout(layout);
 

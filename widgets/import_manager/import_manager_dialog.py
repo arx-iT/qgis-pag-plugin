@@ -63,7 +63,7 @@ class ImportManagerDialog(QDialog, FORM_CLASS):
         self.tabImports.setColumnWidth(1, 90)
         self.tabImports.setColumnWidth(2, 190)
 
-        self.tabImports.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.tabImports.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
         # Load imports
         layer = main.current_project.getImportLogLayer()
@@ -85,7 +85,7 @@ class ImportManagerDialog(QDialog, FORM_CLASS):
 
     def _getCenteredTableWidgetItem(self, text):
         item = QTableWidgetItem(text)
-        item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+        item.setTextAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
         return item
 
     def _rollbackBtnClicked(self):

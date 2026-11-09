@@ -53,13 +53,13 @@ class ExportGML(object):
 
         # Select file to export
         dialog = QFileDialog()
-        dialog.setFileMode(QFileDialog.AnyFile)
-        dialog.setAcceptMode(QFileDialog.AcceptSave)
+        dialog.setFileMode(QFileDialog.FileMode.AnyFile)
+        dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         dialog.setNameFilter('GML file (*.gml)')
         dialog.setDefaultSuffix('gml')
         dialog.setWindowTitle(QCoreApplication.translate('ExportGML', 'Select the gml location'))
         dialog.setSizeGripEnabled(False)
-        result = dialog.exec_()
+        result = dialog.exec()
 
         if result == 0:
             return
@@ -79,7 +79,7 @@ class ExportGML(object):
         progressMessageBar = main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ExportGML','Exporting to GML'))
         progress = QProgressBar()
         progress.setMaximum(len(QgsProject.instance().mapLayers()))
-        progress.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
+        progress.setAlignment(Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
         progressMessageBar.layout().addWidget(progress)
         main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) #INFO=0
 

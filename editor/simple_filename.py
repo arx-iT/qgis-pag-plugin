@@ -43,7 +43,7 @@ class SimpleFilenameWidgetWrapper(QgsEditorWidgetWrapper):
         '''
 
         container = QWidget(parent)
-        container.setBackgroundRole(QPalette.Window)
+        container.setBackgroundRole(QPalette.ColorRole.Window)
         container.setAutoFillBackground(True)
 
         le = QgsFilterLineEdit(container)

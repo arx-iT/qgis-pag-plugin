@@ -53,11 +53,11 @@ class CreateProjectDialog(QDialog, FORM_CLASS):
         '''
 
         dialog = QFileDialog()
-        dialog.setFileMode(QFileDialog.Directory)
-        dialog.setOption(QFileDialog.ShowDirsOnly)
+        dialog.setFileMode(QFileDialog.FileMode.Directory)
+        dialog.setOption(QFileDialog.Option.ShowDirsOnly)
         dialog.setWindowTitle(QCoreApplication.translate('CreateProject','Select the new project location'))
         dialog.setSizeGripEnabled(False)
-        result = dialog.exec_()
+        result = dialog.exec()
 
         if result == 0:
             return
