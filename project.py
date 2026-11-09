@@ -251,7 +251,7 @@ class Project(QObject):
         # Update snapping settings
         QgsProject.instance().writeEntry('Digitizing', '/SnappingMode', 'current_layer')
         QgsProject.instance().writeEntry('Digitizing', '/DefaultSnapType', 'to vertex and segment')
-        QgsProject.instance().writeEntry('Digitizing', '/DefaultSnapTolerance', 10.0)
+        QgsProject.instance().writeEntryDouble('Digitizing', '/DefaultSnapTolerance', 10.0)
         QgsProject.instance().writeEntry('Digitizing', '/DefaultSnapToleranceUnit', QgsTolerance.Pixels)
 
         QgsProject.instance().snappingConfigChanged.emit(QgsSnappingConfig(QgsProject.instance()))
