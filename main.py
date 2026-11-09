@@ -268,38 +268,39 @@ class PAGLuxembourg(object):
                             status_tip=self.tr(u'Check geometries and fix errors'),
                             parent=self.iface.mainWindow()))
         """
-        found = False
-        for action in self.iface.vectorMenu().actions():
-            if action.parent().objectName() == u'qgis_plugin_geometrycheckerplugin':
-                found = True
-                self.topoclean_widget = TopoClean(action)
-                self.pag_actions.append(self.add_action(
-                    ':/plugins/PagLuxembourg/widgets/topoclean/icon.png',
-                    text=self.tr(u'Check geometry'),
-                    callback=self.topoclean_widget.run,
-                    status_tip=self.tr(u'Check geometries and fix errors'),
-                    parent=self.iface.mainWindow()))
+        # Plugin object names: QGIS 3 (geometrycheckerplugin.dll) and QGIS 4 (plugin_geometrychecker.dll)
+        action = self._findNativePluginAction(
+            (u'qgis_plugin_geometrycheckerplugin', u'qgis_plugin_plugin_geometrychecker'),
+            (self.iface.vectorMenu(), self.iface.vectorToolBar()))
+        if action is not None:
+            self.topoclean_widget = TopoClean(action)
+            self.pag_actions.append(self.add_action(
+                ':/plugins/PagLuxembourg/widgets/topoclean/icon.png',
+                text=self.tr(u'Check geometry'),
+                callback=self.topoclean_widget.run,
+                status_tip=self.tr(u'Check geometries and fix errors'),
+                parent=self.iface.mainWindow()))
 
-
-        # Topology checker plugin is not enabled, ask the user to install it
-        if not found:
+        # Geometry checker plugin is not enabled, ask the user to install it
+        else:
             self.iface.initializationCompleted.connect(self._showMissingGeometryCheckerPluginMessage)
 
         # Topology checker
-        found = False
-        for action in self.iface.vectorToolBar().actions():
-            if action.parent().objectName() == u'qgis_plugin_topolplugin':
-                found = True
-                self.topology_widget = TopologyChecker(action)
-                self.pag_actions.append(self.add_action(
-                    ':/plugins/PagLuxembourg/widgets/topology/icon.png',
-                    text=self.tr(u'Check topology'),
-                    callback=self.topology_widget.run,
-                    status_tip=self.tr(u'Check layers topology according to predefined rules'),
-                    parent=self.iface.mainWindow()))
+        # Plugin object names: QGIS 3 (topolplugin.dll) and QGIS 4 (plugin_topology.dll)
+        action = self._findNativePluginAction(
+            (u'qgis_plugin_topolplugin', u'qgis_plugin_plugin_topology'),
+            (self.iface.vectorToolBar(), self.iface.vectorMenu()))
+        if action is not None:
+            self.topology_widget = TopologyChecker(action)
+            self.pag_actions.append(self.add_action(
+                ':/plugins/PagLuxembourg/widgets/topology/icon.png',
+                text=self.tr(u'Check topology'),
+                callback=self.topology_widget.run,
+                status_tip=self.tr(u'Check layers topology according to predefined rules'),
+                parent=self.iface.mainWindow()))
 
         # Topology checker plugin is not enabled, ask the user to install it
-        if not found:
+        else:
             self.iface.initializationCompleted.connect(self._showMissingTopolPluginMessage)
 
         # Data checker
@@ -322,6 +323,29 @@ class PAGLuxembourg(object):
 
         # Update buttons availability
         self.updateGui()
+
+    def _findNativePluginAction(self, plugin_object_names, containers):
+        '''
+        Finds the action of a QGIS native (C++) plugin, by the object name QGIS gives
+        to the plugin ("qgis_plugin_" + library name), in the given menus / toolbars
+
+        :param plugin_object_names: Accepted plugin object names
+        :type plugin_object_names: tuple(str)
+
+        :param containers: Menus / toolbars to search, in order
+        :type containers: tuple(QWidget)
+
+        :returns: The first matching action, or None
+        :rtype: QAction
+        '''
+
+        for container in containers:
+            for action in container.actions():
+                parent = action.parent()
+                if parent is not None and parent.objectName() in plugin_object_names:
+                    return action
+
+        return None
 
     def updateGui(self):
         '''
