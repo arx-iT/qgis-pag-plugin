@@ -8,6 +8,7 @@ from __future__ import absolute_import
 from builtins import range
 import os
 import os.path
+import sys
 from collections import OrderedDict
 #from pyspatialite import dbapi2 as db
 import sqlite3
