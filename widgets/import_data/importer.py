@@ -179,6 +179,15 @@ class Importer(object):
             expr = QgsExpression(mapping.sourceLayerFilter())
             feature_request = QgsFeatureRequest(expr)
 
+        # Reproject to the destination CRS when the source file declares a different CRS.
+        # The provider CRS is used, not the layer CRS: files without a declared CRS
+        # (DXF, SHP without .prj) are imported without reprojection, as before.
+        transform = None
+        src_crs = src_dp.crs()
+        dst_crs = dst_layer.crs()
+        if src_crs.isValid() and dst_crs.isValid() and src_crs != dst_crs:
+            transform = QgsCoordinateTransform(src_crs, dst_crs, QgsProject.instance())
+
         # Explode multi-parts
         source_features = list()
 
@@ -198,6 +207,21 @@ class Importer(object):
                     None
                 ))
                 continue
+
+            # Reproject
+            if transform is not None:
+                geometry = QgsGeometry(geometry)
+                try:
+                    geometry.transform(transform)
+                except QgsCsException:
+                    self.features_errors.append((
+                        mapping.sourceLayerName() if mapping.sourceLayerName() is not None else src_layer.name(),
+                        src_feature.id(),
+                        QCoreApplication.translate('Importer', 'Reprojection error'),
+                        None
+                    ))
+                    continue
+                src_feature.setGeometry(geometry)
 
             # Check if feature geometry is multipart
             if geometry.isMultipart():
