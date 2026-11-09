@@ -1,8 +1,6 @@
 # qgis-pag-plugin
 Plugin QGIS pour la gestion des PAG du Ministère de l'Intérieur du Grand-Duché de Luxembourg
- 
- 
-[![Stories in Ready](https://badge.waffle.io/Geoportail-Luxembourg/qgis-pag-plugin.svg?label=ready&title=Ready)](http://waffle.io/Geoportail-Luxembourg/qgis-pag-plugin) 
 
+## Documentation
 
-[![Throughput Graph](https://graphs.waffle.io/Geoportail-Luxembourg/qgis-pag-plugin/throughput.svg)](https://waffle.io/Geoportail-Luxembourg/qgis-pag-plugin/metrics) 
+[Aide utilisateur du plugin PAG Luxembourg](https://rawcdn.githack.com/Geoportail-Luxembourg/qgis-pag-plugin/d8acd21551f2b6f0a3e4f8c203c2cffca0c3dd3a/help/user/index.html)
