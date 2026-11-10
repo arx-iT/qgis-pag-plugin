@@ -320,7 +320,7 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
             for shp, qgis in valuemap:
                 if shp == shp_value:
                     qgis_value = qgis
-            self.tabValueMap.setItem(rowindex, 0, QTableWidgetItem(shp_value)) # SHP value
+            self.tabValueMap.setItem(rowindex, 0, QTableWidgetItem(str(shp_value))) # SHP value (PyQt6 refuses numeric values)
             self.tabValueMap.setCellWidget(rowindex, 1, self._getFieldsMappingTableItemWidget(qgis_layer, qgis_field, qgis_value, shp_value)) # QGIS value
 
             rowindex +=  1
