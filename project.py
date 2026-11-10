@@ -528,8 +528,10 @@ class Project(QObject):
     def _addOrthoBasemap(self):
         ortho_url = 'url=http://wmts1.geoportail.lu/opendata/service&SLegend=0&crs=EPSG:2169&dpiMode=7&featureCount=10&format=image/jpeg&layers=ortho_latest&styles='
         ortho_found = False
+        # Compare parsed URIs: QGIS 4 reorders and percent-encodes the WMS source string
+        ortho_key = self._wmsUriKey(ortho_url)
         for k, v in list(QgsProject.instance().mapLayers().items()):
-            if v.source() == ortho_url:
+            if v.providerType() == 'wms' and self._wmsUriKey(v.source()) == ortho_key:
                 ortho_found = True
                 break
 
@@ -538,6 +540,21 @@ class Project(QObject):
             QgsProject.instance().addMapLayer(ortho_layer, False)
             QgsProject.instance().layerTreeRoot().addLayer(ortho_layer)
             main.qgis_interface.mapCanvas().setExtent(ortho_layer.extent())
+
+    def _wmsUriKey(self, source):
+        '''
+        Gets the service url and layers of a WMS data source
+
+        :param source: WMS data source, encoded or not
+        :type source: str
+
+        :returns: The url and layers parameters
+        :rtype: tuple
+        '''
+
+        uri = QgsDataSourceUri()
+        uri.setEncodedUri(source)
+        return (uri.param('url'), uri.param('layers'))
 
     def getUriInfos(self, uri):
         '''
