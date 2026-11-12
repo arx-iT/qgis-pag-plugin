@@ -155,7 +155,8 @@ class ErrorSummaryDialog(QDialog, FORM_CLASS):
 
         # CSV filename and directory
         csv_filename = selected_files[0]
-        csvfile = open(csv_filename, 'w')
+        # Explicit encoding: QGIS 4 runs Python in UTF-8 mode (PYTHONUTF8=1), the BOM lets Excel detect it
+        csvfile = open(csv_filename, 'w', encoding='utf-8-sig')
         csvwriter = csv.writer(csvfile, delimiter=';')
 
         # Header
