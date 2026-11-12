@@ -268,9 +268,9 @@ class PAGLuxembourg(object):
                             status_tip=self.tr(u'Check geometries and fix errors'),
                             parent=self.iface.mainWindow()))
         """
-        # Plugin object names: QGIS 3 (geometrycheckerplugin.dll) and QGIS 4 (plugin_geometrychecker.dll)
+        # Plugin object name in QGIS 4 (plugin_geometrychecker.dll)
         action = self._findNativePluginAction(
-            (u'qgis_plugin_geometrycheckerplugin', u'qgis_plugin_plugin_geometrychecker'),
+            (u'qgis_plugin_plugin_geometrychecker',),
             (self.iface.vectorMenu(), self.iface.vectorToolBar()))
         if action is not None:
             self.topoclean_widget = TopoClean(action)
@@ -286,9 +286,9 @@ class PAGLuxembourg(object):
             self.iface.initializationCompleted.connect(self._showMissingGeometryCheckerPluginMessage)
 
         # Topology checker
-        # Plugin object names: QGIS 3 (topolplugin.dll) and QGIS 4 (plugin_topology.dll)
+        # Plugin object name in QGIS 4 (plugin_topology.dll)
         action = self._findNativePluginAction(
-            (u'qgis_plugin_topolplugin', u'qgis_plugin_plugin_topology'),
+            (u'qgis_plugin_plugin_topology',),
             (self.iface.vectorToolBar(), self.iface.vectorMenu()))
         if action is not None:
             self.topology_widget = TopologyChecker(action)
