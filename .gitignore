@@ -1,2 +1,3 @@
 *.pyc
 /assets/sample_data/*.gfs
+/dist/
